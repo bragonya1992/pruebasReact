@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 
 import Video from 'react-native-video';
-import ToastExample from './ToastExample';
 export default class Player extends Component {
 
   state = {
@@ -28,7 +27,6 @@ export default class Player extends Component {
   };
 
   video: Video;
-
   onLoad = (data) => {
     this.setState({ duration: data.duration });
   };
@@ -59,12 +57,10 @@ export default class Player extends Component {
 
   renderRateControl(rate) {
     const isSelected = (this.state.rate === rate);
-    
     return (
       <TouchableOpacity onPress={() => { 
-          ToastExample.show('Awesome', ToastExample.SHORT);
           this.setState({ rate }) 
-          
+          this.props.onRate(rate);
         }}>
         <Text style={[styles.controlOption, { fontWeight: isSelected ? 'bold' : 'normal' }]}>
           {rate}x
@@ -111,7 +107,7 @@ export default class Player extends Component {
             ref={(ref: Video) => { this.video = ref }}
             /* For ExoPlayer */
             /* source={{ uri: 'http://www.youtube.com/api/manifest/dash/id/bf5bb2419360daf1/source/youtube?as=fmp4_audio_clear,fmp4_sd_hd_clear&sparams=ip,ipbits,expire,source,id,as&ip=0.0.0.0&ipbits=0&expire=19000000000&signature=51AF5F39AB0CEC3E5497CD9C900EBFEAECCCB5C7.8506521BFC350652163895D4C26DEE124209AA9E&key=ik0', type: 'mpd' }} */
-            source={require('./broadchurch.mp4')}
+            source={this.props.url}
             style={styles.fullScreen}
             rate={this.state.rate}
             paused={this.state.paused}
